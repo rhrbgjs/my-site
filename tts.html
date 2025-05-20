@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>별이 빛나는 밤 – Flex 레이아웃 & 애니메이션</title>
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    body {
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #eee;
+      font-family: sans-serif;
+    }
+    .hashtags {
+     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 1rem 0;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease 0.7s forwards;
+    }
+
+    .hashtags span {
+    background: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #fff;
+    }
+    header h2 {
+    text-align: left;
+    margin: 0;
+    padding-left: 1rem; 
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 1rem;
+    }
+    main {
+      display: flex;
+      max-width: 960px;
+      margin: 0 auto;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0s forwards;
+    }
+    figure {
+      margin: 0;
+    }
+    #thumb-img {
+      width: 450px;
+      height: 400px;
+      border-radius: 8px;
+      cursor: zoom-in;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+    }
+    figcaption {
+      text-align: center;
+      margin-top: .5rem;
+      font-size: .9rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.4s forwards;
+    }
+    article h3 {
+      margin: 0 0 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.6s forwards;
+    }
+    .art-description {
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.6s forwards;
+    }
+    nav.btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.8s forwards;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: .6rem 1rem;
+      background: #444;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      font-size: .95rem;
+    }
+    .btn:disabled {
+      background: #222;
+      cursor: default;
+      opacity: .5;
+    }
+    .btn:hover:not(:disabled) {
+      background: #666;
+    }
+    .video-wrapper {
+      max-width: 960px;
+      width: 100%;
+      aspect-ratio: 4 / 1.5;
+      overflow: auto;
+      margin: 2rem auto;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 1.2s forwards;
+    }
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      main { flex-direction: column; gap: 10px; padding: 10px 0; }
+      .video-wrapper iframe { height: 200px; }
+    }
+    .extra-description button {
+      animation: fadeInUp 0.6s ease 1s forwards;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <header><h2>Museo del Alma</h2></header>
+  <h1>별이 빛나는 밤</h1>
+
+  <main>
+    <aside id="sidebar">
+      <figure>
+        <img id="thumb-img" src="starry-night.jpg" alt="별이 빛나는 밤" />
+        <figcaption>이미지를 클릭해보세요</figcaption>
+      </figure>
+    </aside>
+
+    <section id="page">
+      <article class="art-info">
+        <h3>작가: 빈센트 반 고흐</h3>
+        <p class="art-description" id="desc-text">
+          이 작품은 고흐가 생레미의 정신병원에서 그린 것으로, 격정적인 감정과
+          고요한 밤하늘의 대조를 보여줍니다. 회전하는 별, 휘몰아치는 하늘은
+          내면의 혼란과 동시에 평온한 감성을 자아냅니다.
+        </p>
+      </article>
+        <div class="hashtags">
+         <span>#고흐</span>
+         <span>#푸른색</span>
+         <span>#감성</span>
+         <span>#밤</span>
+         <span>#정신세계</span>
+       </div>
+
+      <nav class="btn-group">
+        <button class="btn" id="tts-button">🔊 설명 듣기</button>
+        <button class="btn" id="pause-button" disabled>⏸ 일시정지</button>
+        <button class="btn" id="resume-button" disabled>▶️ 재개</button>
+        <button class="btn" onclick="history.back()">← 목록으로 돌아가기</button>
+      </nav>
+    </section>
+  </main>
+
+  <section class="extra-description" style="max-width: 960px; margin: 2rem auto;">
+    <button id="toggle-desc" style="background: #444; color: #fff; padding: 0.6rem 1rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; margin-bottom: 1rem; display: block;">
+      🔽 작품 해설 보기
+    </button>
+    <div id="desc-box" style="display: none; background: transparent; padding: 1.5rem; border-radius: 8px; line-height: 1.6; color: #eee; text-shadow: 1px 1px 2px black;">
+      <p>
+        <strong>별이 빛나는 밤</strong>은 반 고흐가 생레미 드 프로방스의 정신병원에서 창밖 풍경을 바탕으로 그린 작품입니다<br>
+         실제 풍경에 상상과 감정을 더해 강렬하고 생동감 있는 장면을 표현했습니다.<br>
+         소용돌이치는 하늘은 그의 내면의 불안과 혼란을 상징하며, 고요한 마을과 강한 대조를 이룹니다.<br>
+         반 고흐는 짧고 두터운 붓질을 통해 자연의 에너지와 감정의 격동을 표현했습니다.<br>
+         강렬한 파란색과 노란색의 대비는 초현실적인 분위기를 자아냅니다.<br>
+         이 작품은 단순한 풍경이 아닌, 그의 내면세계를 화폭에 담은 표현주의적 성격을 가집니다.<br>
+         전경의 사이프러스 나무는 죽음과 영원을 상징하며, 하늘과 땅을 연결하는 역할을 합니다.<br>
+         별과 초승달은 우주의 신비와 초월성을 상징하여 경외감과 고독감을 함께 전달합니다.<br>
+         반 고흐 생전에는 이 작품이 주목받지 못했지만, 이후 현대 미술에 큰 영향을 주었습니다.<br>
+        오늘날 ‘별이 빛나는 밤’은 뉴욕 MoMA에 소장되어 있으며 전 세계적으로 사랑받는 명작입니다.<br>
+      </p>
+    </div>
+  </section>
+
+  <section class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/Ydjtkve31Lg" allowfullscreen></iframe>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Museo del Alma | info@artemotion.com</p>
+  </footer>
+
+  <audio id="tts-audio" controls style="display:none; width: 100%; max-width: 960px; margin: 1rem auto;"></audio>
+
+  <script>
+    // 설명 토글
+    document.getElementById('toggle-desc').addEventListener('click', () => {
+      const box = document.getElementById('desc-box');
+      const btn = document.getElementById('toggle-desc');
+      const isOpen = box.style.display === 'block';
+      box.style.display = isOpen ? 'none' : 'block';
+      btn.innerHTML = isOpen ? '🔽 작품 해설 보기' : '🔼 작품 해설 닫기';
+    });
+
+    // TTS 재생 컨트롤
+       document.addEventListener('DOMContentLoaded', () => {
+      const playBtn   = document.getElementById('tts-button');
+      const pauseBtn  = document.getElementById('pause-button');
+      const resumeBtn = document.getElementById('resume-button');
+      const audio     = document.getElementById('tts-audio');
+      const text      = document.getElementById('desc-text').innerText.trim();
+
+      // 1) 음성 목록 로드
+      let voices = [];
+      speechSynthesis.onvoiceschanged = () => {
+        voices = speechSynthesis.getVoices();
+      };
+
+      // 2) 재생 버튼 클릭
+      playBtn.addEventListener('click', async () => {
+        if (!text) {
+          alert('설명 텍스트가 없습니다.');
+          return;
+        }
+        // 기존 재생 중단
+        speechSynthesis.cancel();
+
+        // 발화 객체 생성
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'ko-KR';
+
+        // 'Google 한국의 여성' 목소리 찾기
+        const femaleKorean = voices.find(v =>
+          v.lang === 'ko-KR' && v.name.includes('Google 한국의 여성')
+        );
+        if (femaleKorean) {
+          utt.voice = femaleKorean;
+        }
+
+        // 속도·톤 설정
+        utt.rate  = 1.0;
+        utt.pitch = 0.5;
+
+        // 재생 종료 시 버튼 상태 리셋
+        utt.onend = () => {
+          playBtn.disabled   = false;
+          pauseBtn.disabled  = true;
+          resumeBtn.disabled = true;
+        };
+
+        // 발화 시작
+        speechSynthesis.speak(utt);
+
+        // 버튼 상태 업데이트
+        playBtn.disabled   = true;
+        pauseBtn.disabled  = false;
+        resumeBtn.disabled = true;
+      });
+
+      // 3) 일시정지
+      pauseBtn.addEventListener('click', () => {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+          speechSynthesis.pause();
+          pauseBtn.disabled  = true;
+          resumeBtn.disabled = false;
+        }
+      });
+
+      // 4) 재개
+      resumeBtn.addEventListener('click', () => {
+        if (speechSynthesis.paused) {
+          speechSynthesis.resume();
+          resumeBtn.disabled = true;
+          pauseBtn.disabled  = false;
+        }
+      });
+
+      // 탭 닫을 때 음성 중지
+      window.addEventListener('beforeunload', () => {
+        speechSynthesis.cancel();
+      });
+    });
+
+    // 이미지 클릭 확대
+    (function() {
+      const thumb = document.getElementById('thumb-img');
+      const modal = document.createElement('div');
+      modal.id = 'img-modal';
+      modal.style.cssText = `
+        display:none;position:fixed;z-index:10000;
+        top:0;left:0;width:100%;height:100%;
+        background:rgba(0,0,0,0.8);
+        justify-content:center;align-items:center;`;
+      document.body.appendChild(modal);
+      modal.innerHTML = `
+        <span id="modal-close" style="position:absolute;top:20px;right:30px;color:#fff;font-size:2rem;cursor:pointer;user-select:none;z-index:10001;">&times;</span>
+        <div class="modal-zoom-container" style="position:relative;overflow:hidden;width:80vw;max-width:1200px;height:80vh;border-radius:8px;cursor:zoom-out;">
+          <img id="modal-img" src="${thumb.src}" style="width:100%;transition:transform .2s ease-out;transform-origin:center center;" />
+        </div>`;
+      const close = modal.querySelector('#modal-close');
+      const zoomC = modal.querySelector('.modal-zoom-container');
+      const img = modal.querySelector('#modal-img');
+      const scale = 2;
+      thumb.addEventListener('click', () => {
+        img.src = thumb.src;
+        modal.style.display = 'flex';
+        img.style.transform = 'scale(1)';
+      });
+      close.addEventListener('click', () => modal.style.display = 'none');
+      modal.addEventListener('click', e => {
+        if (e.target === modal) modal.style.display = 'none';
+      });
+      zoomC.addEventListener('mousemove', e => {
+        const r = zoomC.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width * 100;
+        const py = (e.clientY - r.top) / r.height * 100;
+        img.style.transformOrigin = `${px}% ${py}%`;
+      });
+      zoomC.addEventListener('mouseenter', () => img.style.transform = `scale(${scale})`);
+      zoomC.addEventListener('mouseleave', () => img.style.transform = 'scale(1)');
+    })();
+  </script>
+</body>
+</html>
